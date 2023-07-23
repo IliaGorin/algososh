@@ -30,7 +30,7 @@ export const stateCircle = (
 
 export const StringComponent: React.FC = () => {
   const [inputString, setInputValue] = useState<string>('');
-  const [arrayForRender, setArrayForRender] = useState<Array<string>>([]);
+  const [arrayForRender, setArrayForRender] = useState<string[]>([]);
   const [isloader, setIsLoader] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
@@ -55,7 +55,7 @@ export const StringComponent: React.FC = () => {
         ];
         setCurrentIndex((i) => i + 1);
         setArrayForRender([...symbolsArray]);
-      }, 1000 + delay);
+      }, delay);
       delay += 1000;
     }
 
@@ -73,7 +73,6 @@ export const StringComponent: React.FC = () => {
             setInputValue(e.currentTarget.value);
           }}
           value={inputString}
-          extraClass="mr-6"
         />
         <Button
           type={'button'}
