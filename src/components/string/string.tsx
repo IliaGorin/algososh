@@ -31,7 +31,7 @@ export const stateCircle = (
 export const StringComponent: React.FC = () => {
   const [inputString, setInputValue] = useState<string>('');
   const [arrayForRender, setArrayForRender] = useState<string[]>([]);
-  const [isloader, setIsLoader] = useState<boolean>(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const handleReverse = () => {
@@ -41,14 +41,15 @@ export const StringComponent: React.FC = () => {
 
     setIsLoader(true);
     setArrayForRender([...symbolsArray]);
-
     setCurrentIndex(0);
-    setIsLoader(false);
     setInputValue('');
+
     let delay = DELAY_IN_MS;
 
     for (let i = 0; i < middle; i++) {
       setTimeout(() => {
+        setIsLoader(true);
+        console.log('to true');
         [symbolsArray[i], symbolsArray[endOfArray - i]] = [
           symbolsArray[endOfArray - i],
           symbolsArray[i],
@@ -58,8 +59,9 @@ export const StringComponent: React.FC = () => {
       }, delay);
       delay += 1000;
     }
-
-    return symbolsArray;
+    setTimeout(() => {
+      setIsLoader(false);
+    }, delay);
   };
 
   return (
@@ -77,7 +79,7 @@ export const StringComponent: React.FC = () => {
         <Button
           type={'button'}
           text={'Развернуть'}
-          isLoader={isloader}
+          isLoader={isLoader}
           disabled={inputString === ''}
           onClick={(e) => {
             handleReverse();

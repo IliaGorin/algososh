@@ -9,7 +9,7 @@ import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 export const FibonacciPage: React.FC = () => {
   const [inputNumber, setInputNumber] = useState<string>('');
   const [fibonacciArray, setFibonacciArray] = useState<number[]>([]);
-  const [isloader, setIsLoader] = useState<boolean>(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
   const getFibonacciNumbersArray = (n: number) => {
     let FibonacciNumbersArray = [0, 1];
@@ -39,7 +39,9 @@ export const FibonacciPage: React.FC = () => {
       delay += 500;
     }
     setInputNumber('');
-    setIsLoader(false);
+    setTimeout(() => {
+      setIsLoader(false);
+    }, delay);
   };
 
   return (
@@ -61,7 +63,7 @@ export const FibonacciPage: React.FC = () => {
         <Button
           type={'button'}
           text={'Рассчитать'}
-          isLoader={isloader}
+          isLoader={isLoader}
           disabled={!inputNumber || Number(inputNumber) > 19}
           onClick={(e) => {
             handleFibonacci();
