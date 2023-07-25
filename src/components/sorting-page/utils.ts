@@ -46,12 +46,15 @@ export const swap = (
 export const makeSelectionSorting = async (
   array: ArrayNumbers[],
   setArray: Dispatch<SetStateAction<ArrayNumbers[]>>,
-  direction: Direction
+  direction: Direction,
+  setIsAscending: Dispatch<SetStateAction<boolean>>,
+  setIsDescending: Dispatch<SetStateAction<boolean>>
 ) => {
   for (let i = 0; i < array.length; i++) {
     let maxIndex = i;
     array[maxIndex].state = ElementStates.Changing;
     setArray([...array]);
+    direction === 'ascending' ? setIsAscending(true) : setIsDescending(true);
     await delay(SHORT_DELAY_IN_MS);
     for (let j = i + 1; j < array.length; j++) {
       array[j].state = ElementStates.Changing;
@@ -77,13 +80,16 @@ export const makeSelectionSorting = async (
     array[i].state = ElementStates.Modified;
     setArray([...array]);
     await delay(SHORT_DELAY_IN_MS);
+    direction === 'ascending' ? setIsAscending(false) : setIsDescending(false);
   }
 };
 
 export const makeBubbleSorting = async (
   array: ArrayNumbers[],
   setArray: Dispatch<SetStateAction<ArrayNumbers[]>>,
-  direction: Direction
+  direction: Direction,
+  setIsAscending: Dispatch<SetStateAction<boolean>>,
+  setIsDescending: Dispatch<SetStateAction<boolean>>
 ) => {
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < array.length - i - 1; j++) {
@@ -91,6 +97,7 @@ export const makeBubbleSorting = async (
       array[p].state = ElementStates.Changing;
       array[j].state = ElementStates.Changing;
       setArray([...array]);
+      direction === 'ascending' ? setIsAscending(true) : setIsDescending(true);
       await delay(SHORT_DELAY_IN_MS);
       if (
         direction === 'ascending'
@@ -107,5 +114,7 @@ export const makeBubbleSorting = async (
     }
     array[array.length - i - 1].state = ElementStates.Modified;
     setArray([...array]);
+    await delay(SHORT_DELAY_IN_MS);
+    direction === 'ascending' ? setIsAscending(false) : setIsDescending(false);
   }
 };
