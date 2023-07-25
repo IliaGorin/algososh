@@ -1,0 +1,19 @@
+.mainWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 0 auto;
+  min-width: 50%;
+}
+
+.columns {
+  list-style-type: none;
+  display: flex;
+  column-gap: 10px;
+  justify-content: center;
+  align-content: flex-start;
+  align-items: flex-end;
+  padding-top: 48px;
+  margin: 0 auto;
+  max-width: 944px;
+}
