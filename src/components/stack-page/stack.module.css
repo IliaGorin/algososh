@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.array {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 78px 0 0;
+  padding: 0;
+}
+
+.input {
+  width: 377px;
+}
