@@ -37,10 +37,21 @@ export const ListPage: React.FC = () => {
 
   const [indexValue, setIndexValue] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
+  const [isProcessingAddToHead, setIsProcessingProcessingAddToHead] =
+    useState(false);
+  const [isProcessingAddToTail, setIsProcessingAddToTail] = useState(false);
+  const [isProcessingDeleteFromTail, setIsProcessingDeleteFromTail] =
+    useState(false);
+  const [isProcessingDeleteFromHead, setIsProcessingDeleteFromHead] =
+    useState(false);
+
+  const [isProcessingAddByIndex, setIsProcessingAddByIndex] = useState(false);
+  const [isProcessingDelByIndex, setIsProcessingDelByIndex] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [arrayForRender, setArrayForRender] = useState<Circle[]>(defaultArr());
 
   const addToHead = async () => {
+    setIsProcessingProcessingAddToHead(true);
     setIsProcessing(true);
     linkedList.prepend(inputValue);
     arrayForRender[0] = {
@@ -66,12 +77,14 @@ export const ListPage: React.FC = () => {
     setArrayForRender([...arrayForRender]);
     await delay(SHORT_DELAY_IN_MS);
     arrayForRender[0].state = ElementStates.Default;
+    setIsProcessingProcessingAddToHead(false);
     setIsProcessing(false);
     setInputValue('');
   };
 
   const deleteFromHead = async () => {
     setIsProcessing(true);
+    setIsProcessingDeleteFromHead(true);
     arrayForRender[0] = {
       ...arrayForRender[0],
       element: '',
@@ -85,10 +98,12 @@ export const ListPage: React.FC = () => {
     arrayForRender.shift();
     setArrayForRender([...arrayForRender]);
     setIsProcessing(false);
+    setIsProcessingDeleteFromHead(false);
   };
 
   const addToTail = async () => {
     setIsProcessing(true);
+    setIsProcessingAddToTail(true);
     linkedList.append(inputValue);
     const { length } = arrayForRender;
     arrayForRender[length - 1] = {
@@ -118,10 +133,12 @@ export const ListPage: React.FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     arrayForRender.forEach((item) => (item.state = ElementStates.Default));
     setIsProcessing(false);
+    setIsProcessingAddToTail(false);
     setInputValue('');
   };
 
   const deleteFromTail = async () => {
+    setIsProcessingDeleteFromTail(true);
     setIsProcessing(true);
     const { length } = arrayForRender;
     arrayForRender[length - 1] = {
@@ -136,11 +153,13 @@ export const ListPage: React.FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     arrayForRender.pop();
     setArrayForRender([...arrayForRender]);
+    setIsProcessingDeleteFromTail(false);
     setIsProcessing(false);
   };
 
   const insertByIndex = async (indexValue: number) => {
     setIsProcessing(true);
+    setIsProcessingAddByIndex(true);
     linkedList.addByIndex(inputValue, indexValue);
     for (let i = 0; i <= indexValue; i++) {
       arrayForRender[i] = {
@@ -177,11 +196,13 @@ export const ListPage: React.FC = () => {
     arrayForRender.forEach((item) => (item.state = ElementStates.Default));
     setArrayForRender([...arrayForRender]);
     await delay(SHORT_DELAY_IN_MS);
+    setIsProcessingAddByIndex(false);
     setIsProcessing(false);
   };
 
   const deleteByIndex = async (index: number) => {
     setIsProcessing(true);
+    setIsProcessingDelByIndex(true);
     for (let i = 0; i <= index; i++) {
       arrayForRender[i].state = ElementStates.Changing;
       setArrayForRender([...arrayForRender]);
@@ -202,6 +223,7 @@ export const ListPage: React.FC = () => {
     await delay(SHORT_DELAY_IN_MS);
     arrayForRender.forEach((item) => (item.state = ElementStates.Default));
     setIsProcessing(false);
+    setIsProcessingDelByIndex(false);
   };
 
   return (
@@ -221,15 +243,15 @@ export const ListPage: React.FC = () => {
         <Button
           type="button"
           text={'Добавить в head'}
-          isLoader={isProcessing}
+          isLoader={isProcessingAddToHead}
           onClick={() => addToHead()}
-          disabled={!inputValue || arrayForRender.length > 10}
+          disabled={!inputValue || arrayForRender.length > 10 || isProcessing}
           extraClass={styles.button}
         />
         <Button
           type="button"
           text={'Добавить в tail'}
-          isLoader={isProcessing}
+          isLoader={isProcessingAddToTail}
           onClick={() => addToTail()}
           disabled={!inputValue || isProcessing}
           extraClass={styles.button}
@@ -238,6 +260,7 @@ export const ListPage: React.FC = () => {
           type="button"
           text={'Удалить из head'}
           onClick={() => deleteFromHead()}
+          isLoader={isProcessingDeleteFromHead}
           disabled={isProcessing || arrayForRender.length === 1}
           extraClass={styles.button}
         />
@@ -245,6 +268,7 @@ export const ListPage: React.FC = () => {
           type="button"
           text={'Удалить из tail'}
           onClick={() => deleteFromTail()}
+          isLoader={isProcessingDeleteFromTail}
           disabled={isProcessing || arrayForRender.length === 1}
           extraClass={styles.button}
         />
@@ -266,10 +290,11 @@ export const ListPage: React.FC = () => {
         <Button
           type="button"
           text={'Добавить по индексу'}
-          isLoader={isProcessing}
+          isLoader={isProcessingAddByIndex}
           onClick={() => insertByIndex(Number(indexValue))}
           disabled={
             !indexValue ||
+            !inputValue ||
             Number(indexValue) > arrayForRender.length - 1 ||
             isProcessing
           }
@@ -278,9 +303,11 @@ export const ListPage: React.FC = () => {
         <Button
           type="button"
           text={'Удалить по индексу'}
+          isLoader={isProcessingDelByIndex}
           onClick={() => deleteByIndex(Number(indexValue))}
           disabled={
             !indexValue ||
+            !inputValue ||
             isProcessing ||
             arrayForRender.length === 1 ||
             Number(indexValue) > arrayForRender.length - 1

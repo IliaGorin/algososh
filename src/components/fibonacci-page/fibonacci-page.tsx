@@ -10,9 +10,11 @@ export const FibonacciPage: React.FC = () => {
   const [inputNumber, setInputNumber] = useState<string>('');
   const [fibonacciArray, setFibonacciArray] = useState<number[]>([]);
   const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isAcceptable, setIsAcceptable] = useState<boolean>(false);
 
   const getFibonacciNumbersArray = (n: number) => {
     let FibonacciNumbersArray = [0, 1];
+
     if (n === 1) {
       return FibonacciNumbersArray.slice(0, 1);
     } else if (n === 2) {
@@ -28,20 +30,24 @@ export const FibonacciPage: React.FC = () => {
   };
 
   const handleFibonacci = () => {
-    setIsLoader(true);
-
     let delay = SHORT_DELAY_IN_MS;
-    const calcArray = getFibonacciNumbersArray(Number(inputNumber));
-    for (let i = 0; i < calcArray.length; i++) {
-      setTimeout(() => {
-        setFibonacciArray(calcArray.slice(0, i + 1));
-      }, delay);
-      delay += 500;
+    if (Number(inputNumber) > 0) {
+      setIsAcceptable(true);
     }
-    setInputNumber('');
-    setTimeout(() => {
-      setIsLoader(false);
-    }, delay);
+    if (Number(inputNumber) > 0) {
+      setIsLoader(true);
+      const calcArray = getFibonacciNumbersArray(Number(inputNumber));
+      for (let i = 0; i < calcArray.length; i++) {
+        setTimeout(() => {
+          setFibonacciArray(calcArray.slice(0, i + 1));
+        }, delay);
+        delay += 500;
+      }
+      setInputNumber('');
+      setTimeout(() => {
+        setIsLoader(false);
+      }, delay);
+    }
   };
 
   return (
@@ -64,21 +70,25 @@ export const FibonacciPage: React.FC = () => {
           type={'button'}
           text={'Рассчитать'}
           isLoader={isLoader}
-          disabled={!inputNumber || Number(inputNumber) > 19}
+          disabled={
+            !inputNumber || Number(inputNumber) > 19 || Number(inputNumber) < 1
+          }
           onClick={(e) => {
             handleFibonacci();
           }}
         />
       </div>
-      <ul className={styles.numbersContainer}>
-        {fibonacciArray.map((item: number, indexOfRender: number) => (
-          <Circle
-            key={indexOfRender}
-            letter={`${item}`}
-            index={indexOfRender}
-          />
-        ))}
-      </ul>
+      {isAcceptable && (
+        <ul className={styles.numbersContainer}>
+          {fibonacciArray.map((item: number, indexOfRender: number) => (
+            <Circle
+              key={indexOfRender}
+              letter={`${item}`}
+              index={indexOfRender}
+            />
+          ))}
+        </ul>
+      )}
     </SolutionLayout>
   );
 };
