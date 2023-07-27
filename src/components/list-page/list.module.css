@@ -1,0 +1,55 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  min-width: 50%;
+  margin: 0 auto;
+}
+
+.input {
+  width: 204px;
+}
+
+.button {
+  width: 175px;
+}
+
+.buttonIndex {
+  width: 362px;
+}
+
+.wrapperIndex {
+  padding-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.listWrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  list-style-type: none;
+  margin: 0;
+  padding: 90px 0 0;
+}
+
+.list {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.add {
+  position: absolute;
+  left: 12px;
+  top: -68px;
+}
+
+.del {
+  position: absolute;
+  left: 15px;
+  top: 110px;
+}
