@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 522px;
+  margin: 0 auto;
+  gap: 12px;
+}
+
+.lettersContainer {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 120px 0 0 0;
+}
